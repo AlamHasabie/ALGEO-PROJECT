@@ -93,12 +93,12 @@ def get_command():
 					action_command(current_vertex,parse_list)
 					break	
 				else:
-					write "Input salah, masukkan kembali : "
+					print("Input salah, masukkan kembali : ")
 	else:
 		action_command(current_vertex,parse_command)
 
 def input_vertices():
-	print "Masukkan Banyaknya Sisi : "
+	print ("Masukkan Banyaknya Sisi : ")
 	n_vertices = input()
 	global start_vertex
 	global current_vertex
@@ -108,7 +108,3 @@ def input_vertices():
  		start_vertex = np.append(start_vertex,tmp)
  	start_vertex = np.resize(start_vertex,(2,2))
  	current_vertex = np.array(start_vertex)
- 	
-input_vertices()
-get_command()
-print current_vertex
