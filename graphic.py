@@ -3,6 +3,7 @@ from pygame.locals import *
 
 from OpenGL.GL import *
 from OpenGL.GLU import *
+import numpy as np
 
 verticies = (
     (1,1),
@@ -28,17 +29,6 @@ def Cube():
 
 
 def main():
-    pygame.init()
-    display = (800,600)
-    pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
-
-    gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
-
-    glTranslatef(0.0,0.0, -5)
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
-    Cube()
-    pygame.display.flip()
-
     while True:
         user_input = input(":")
         if user_input == "rotate-90-cc" :
@@ -62,6 +52,19 @@ def main():
 
 def init():
     pygame.init()
-    display = (800,600)
+    display = (1200,1200)
     pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
     gluPerspective(45, (display[0]/display[1]), 0.1, 50.0)
+    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
+
+def render(current_vertex):
+    glBegin(GL_LINES)
+    i = 0
+    while i < (current_vertex.size-1) :
+        glVertex2fv(current_vertex[i])
+        glVertex2fv(current_vertex[i+1])
+        i = i+1
+    glVertex2fv(current_vertex[i])
+    glVertex2fv(current_vertex[0])
+    glEnd()
+

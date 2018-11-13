@@ -1,12 +1,11 @@
 import numpy as np
 import time
-import thread
 import math
 
 start_vertex = []
 
 def dilate(current_vertex,k):
-	current_vertex *= k
+	current_vertex  = (i*k for i in current_vertex)
 	return current_vertex
 
 def translate(current_vertex,dx,dy):
@@ -82,12 +81,12 @@ def action_command(current_vertex,command):
 		current_vertex = reflect(current_vertex,command[1])
 
 def get_command():
-	command = raw_input()
+	command = input('Masukkan command :')
 	parse_command = command.split(" ")
 	if(parse_command[0] == 'multiple'):
 		for i in range(int(parse_command[1])):
 			while True:
-				list_command = raw_input()
+				list_command = input()
 				parse_list = list_command.split(" ")
 				if((parse_list[0] == 'dilate') or (parse_list[0] == 'translate') or (parse_list[0] == 'custom') or (parse_list[0] == 'rotate') or (parse_list[0] == 'shear') or (parse_list[0] == 'stretch') or (parse_list[0] == 'reflect')):
 					action_command(current_vertex,parse_list)
@@ -102,9 +101,10 @@ def input_vertices():
 	n_vertices = input()
 	global start_vertex
 	global current_vertex
-	for x in range(n_vertices):
- 		get_Avertex = raw_input()
- 		tmp = map(float,get_Avertex.split(","))
- 		start_vertex = np.append(start_vertex,tmp)
- 	start_vertex = np.resize(start_vertex,(2,2))
- 	current_vertex = np.array(start_vertex)
+	for x in range(int(n_vertices)):
+		get_Avertex = input()
+		tmp = map(float,get_Avertex.split(","))
+		start_vertex = np.append(start_vertex,tmp)
+	start_vertex = np.resize(start_vertex,(2,2))
+	current_vertex = np.array(start_vertex)
+	return start_vertex
