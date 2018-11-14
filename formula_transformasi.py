@@ -2,8 +2,6 @@ import numpy as np
 import time
 import math
 
-start_vertex = []
-
 def dilate(current_vertex,k):
 	current_vertex  = (i*k for i in current_vertex)
 	return current_vertex
@@ -97,14 +95,19 @@ def get_command():
 		action_command(current_vertex,parse_command)
 
 def input_vertices():
+	start_vertex = []
 	print ("Masukkan Banyaknya Sisi : ")
 	n_vertices = input()
-	global start_vertex
-	global current_vertex
 	for x in range(int(n_vertices)):
 		get_Avertex = input()
-		tmp = map(float,get_Avertex.split(","))
-		start_vertex = np.append(start_vertex,tmp)
-	start_vertex = np.resize(start_vertex,(2,2))
-	current_vertex = np.array(start_vertex)
+		tmp = list(get_Avertex.split(","))
+		while len(tmp)!=2 : 
+			print("Input salah , masukkan kembali :")
+			get_Avertex = input()
+			tmp = list(get_Avertex.split(","))
+		for n in range(len(tmp)) :
+			tmp[n] = float(tmp[n])
+		tmp.append(0)
+		start_vertex.append(tmp)
+	edge_list = []
 	return start_vertex
