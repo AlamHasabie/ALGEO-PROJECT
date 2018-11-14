@@ -113,3 +113,5 @@ def input_vertices():
 		tmp.append(0)
 		start_vertex.append(tmp)
 	return start_vertex
+
+input_vertices()

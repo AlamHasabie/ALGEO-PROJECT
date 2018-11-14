@@ -15,10 +15,12 @@ def animate_translate_2d(dx,dy) :
 		CURRENT_VERTICES = translate(CURRENT_VERTICES,a_dx,a_dy,0)
 		render_polygon(CURRENT_VERTICES)
 		i=i+1
-	render_polygon([[200,0,0],[0,200,0],[0,0,0]])
-
 #def animate_dilate(factor) :
-#def animate_rotate(command) :
+def animate_rotate(command) :
+	global CURRENT_VERTICES
+	i = 1
+	while i < int(command[1]) :
+		CURRENT_VERTICES = rotate2D(CURRENT_VERTICES,i,float(command[2]),float(command[3]))
 #def animate_shear(command) :
 #def animate_stretch(command) :
 #def animate_reflect(command) :
@@ -36,7 +38,7 @@ def main():
 	init_window()
 	render_polygon(CURRENT_VERTICES)
 	while True :
-		command = input('Masukkan perintah :')
+		command = input('Masukkan perintah : ')
 		command = command.split(" ")
 		if command[0] == 'dilate' :
 			animate_dilate(float(command[1]))
