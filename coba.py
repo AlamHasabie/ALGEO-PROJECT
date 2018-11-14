@@ -21,7 +21,10 @@ def shear(current_vertex,axis,k):
 			shear_matrix[1][0] = k
 			shear_matrix[1][1] = 1
 		else 
-			
+			shear_matrix[0][0] = 1
+			shear_matrix[0][1] = k
+			shear_matrix[1][0] = 0
+			shear_matrix[1][1] = 1
 	current_vertex = np.dot(current_vertex,shear_matrix)
 	return current_vertex
 
