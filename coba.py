@@ -1,7 +1,7 @@
 import numpy as np
+import math 
 
 def dilate(current_vertex,k):
-	print(311)
 	current_vertex *= k
 	return current_vertex
 
@@ -17,17 +17,82 @@ def shear(current_vertex,axis,k):
 	if(dimensi == 2):
 		if(axis == 'x'):
 			shear_matrix[0][0] = 1
-			shear_matrix[0][1] = 0
 			shear_matrix[1][0] = k
 			shear_matrix[1][1] = 1
-		else 
+		else:
 			shear_matrix[0][0] = 1
 			shear_matrix[0][1] = k
-			shear_matrix[1][0] = 0
 			shear_matrix[1][1] = 1
 	current_vertex = np.dot(current_vertex,shear_matrix)
 	return current_vertex
 
+def stretch(current_vertex,axis,k):
+	s = (3,3)
+	stretch_matrix = np.zeros(s)
+	if(dimensi == 2):
+		if(axis == 'x'):
+			stretch_matrix[0][0] = 1
+			stretch_matrix[1][1] = k
+		else:
+			stretch_matrix[0][0] = k
+			stretch_matrix[1][1] = 1
+	current_vertex = np.dot(current_vertex,stretch_matrix)
+	return current_vertex
+
+def reflect(current_vertex,parameter):
+	s = (3,3)
+	reflect_matrix = np.zeros(s)
+	if(dimensi == 2):
+		if(parameter == 'x'):
+			reflect_matrix[0][0] = 1
+			reflect_matrix[1][1] = -1
+			current_vertex = np.dot(current_vertex,reflect_matrix)
+		elif(parameter == 'y'):
+			reflect_matrix[0][0] = -1
+			reflect_matrix[1][1] = 1
+			current_vertex = np.dot(current_vertex,reflect_matrix)
+		elif(parameter == 'y=x'):
+			reflect_matrix[0][1] = 1
+			reflect_matrix[1][0] = 1
+			current_vertex = np.dot(current_vertex,reflect_matrix)
+		elif(parameter == 'y=-x'):
+			reflect_matrix[0][1] = -1
+			reflect_matrix[1][0] = -1
+			current_vertex = np.dot(current_vertex,reflect_matrix)
+		else:
+			parameter = parameter[1:len(parameter)-1]
+			parameter = parameter.split(",")
+			current_vertex = rotate(current_vertex,180,float(parameter[0]),float(parameter[1]))
+	return current_vertex	
+
+def rotate(current_vertex,angle,x,y):
+	s = (3,3)
+	rotate_matrix = np.zeros(s)
+	if(dimensi == 2):
+		rotate_matrix[0][0] = math.cos(math.radians(angle))
+		rotate_matrix[0][1] = math.sin(math.radians(angle))
+		rotate_matrix[1][0] = -math.sin(math.radians(angle))
+		rotate_matrix[1][1] = math.cos(math.radians(angle))
+	current_vertex = translate(current_vertex,-x,-y,0)
+	current_vertex = np.dot(current_vertex,rotate_matrix)
+	current_vertex = translate(current_vertex,x,y,0)
+	return current_vertex
+
+def custom(current_vertex,command):
+	s = (3,3)
+	custom_matrix = np.zeros(s)
+	if(dimensi == 2):
+		custom_matrix[0][0] = command[1]
+		custom_matrix[0][1] = command[2]
+		custom_matrix[1][0] = command[3]
+		custom_matrix[1][1] = command[4]
+	else:
+		idx = 1
+		for i in custom_matrix:
+			i = command[idx]
+			idx = idx + 1
+	current_vertex = np.dot(current_vertex,custom_matrix)
+	return current_vertex
 
 def action_command(current_vertex,command):
 	if(command[0] == 'dilate'):
@@ -39,8 +104,18 @@ def action_command(current_vertex,command):
 			current_vertex = translate(current_vertex,float(command[1]),float(command[2]),float(command[3]))
 	elif(command[0] == 'shear'):
 		if(dimensi == 2):
-			current_vertex = shear(current_vertex,command[1],float(command[2]))
-			print(current_vertex)
+			current_vertex = shear(current_vertex,command[1],float(command[2]),0)
+		else 
+			current_vertex = shear(current_vertex,command[1],float(command[2]),float(command[3]))
+	elif(command[0] == 'stretch'):
+		if(dimensi == 2):
+			current_vertex = stretch(current_vertex,command[1],float(command[2]))
+	elif(command[0] == 'reflect'):
+		current_vertex = reflect(current_vertex,command[1])
+	elif(command[0] == 'rotate'):
+		current_vertex = rotate(current_vertex,float(command[1]),float(command[2]),float(command[3]))
+	elif(command[0] == 'custom'):
+		current_vertex = custom(current_vertex,command)
 	return current_vertex
 
 #Membaca masukan
@@ -61,7 +136,7 @@ def get_command():
 	current_vertex = np.matrix(start_vertex[0])
 	print(current_vertex)
 	current_vertex = action_command(current_vertex,parse_command)
-	print(current_vertex)
+	return current_vertex.tolist()
 
 def input_vertices():
 	start_vertex = []
@@ -91,4 +166,4 @@ def input_vertices():
 
 dimensi = 2
 start_vertex = input_vertices()
-get_command()
+print(get_command())
