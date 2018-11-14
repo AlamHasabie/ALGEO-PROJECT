@@ -58,9 +58,9 @@ def main():
             glEnd()
             pygame.display.flip()
             pygame.time.wait(10)
-def translate(current_vertices,dx,dy,dz):
+def translate(CURRENT_VERTICES,dx,dy,dz):
     output_vertice = []
-    for vertice in current_vertices :
+    for vertice in CURRENT_VERTICES :
         x = dx + vertice[0]
         y = dy + vertice[1]
         output_vertice.append((x,y,0))

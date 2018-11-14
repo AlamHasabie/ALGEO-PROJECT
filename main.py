@@ -1,12 +1,22 @@
 from coba import *
 from graphic import *
 
-global start_vertices
-global current_vertices
+START_VERTICES = []
+CURRENT_VERTICES = []
 
 
 
-#def animate_translate(dx,dy) :
+def animate_translate_2d(dx,dy) :
+	global CURRENT_VERTICES
+	a_dx = dx/60
+	a_dy = dy/60
+	i=1
+	while i<=60 :
+		CURRENT_VERTICES = translate(CURRENT_VERTICES,a_dx,a_dy,0)
+		render_polygon(CURRENT_VERTICES)
+		i=i+1
+	render_polygon([[200,0,0],[0,200,0],[0,0,0]])
+
 #def animate_dilate(factor) :
 #def animate_rotate(command) :
 #def animate_shear(command) :
@@ -19,17 +29,19 @@ global current_vertices
 
 
 def main():
-	start_vertices = input_vertices()
-	current_vertices = start_vertices
+	global CURRENT_VERTICES
+	global START_VERTICES
+	START_VERTICES = input_vertices()
+	CURRENT_VERTICES = START_VERTICES
 	init_window()
-	render_polygon(current_vertices)
+	render_polygon(CURRENT_VERTICES)
 	while True :
 		command = input('Masukkan perintah :')
 		command = command.split(" ")
 		if command[0] == 'dilate' :
 			animate_dilate(float(command[1]))
 		elif(command[0] == 'translate'):
-			animate_translate(float(command[1]),float(command[2]))
+			animate_translate_2d(float(command[1]),float(command[2]))
 		elif(command[0] == 'custom'):
 			animate_custom(command)
 		elif(command[0] == 'rotate'):
@@ -43,8 +55,8 @@ def main():
 		elif(command[0]== 'multiple') :
 			multiple()
 		elif(command[0]=='reset'):
-			current_vertices = start_vertices
-			render_polygon(current_vertices)
+			CURRENT_VERTICES = START_VERTICES
+			render_polygon(CURRENT_VERTICES)
 		else :
 			print('Perintah salah. Masukkan perintah kembali :')
 
