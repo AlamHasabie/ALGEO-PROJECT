@@ -44,7 +44,7 @@ def stretch(current_vertex,axis,k):
 	current_vertex = np.dot(current_vertex,stretch_matrix)
 	return current_vertex
 
-def reflect(current_vertex,parameter):
+def reflect(current_vertex,parameter,dimensi):
 	s = (3,3)
 	reflect_matrix = np.zeros(s)
 	if(dimensi == 2):
@@ -85,11 +85,10 @@ def reflect(current_vertex,parameter):
 def rotate2D(current_vertex,angle,x,y):
 	s = (3,3)
 	rotate_matrix = np.zeros(s)
-	if(dimensi == 2):
-		rotate_matrix[0][0] = math.cos(math.radians(angle))
-		rotate_matrix[0][1] = math.sin(math.radians(angle))
-		rotate_matrix[1][0] = -math.sin(math.radians(angle))
-		rotate_matrix[1][1] = math.cos(math.radians(angle))
+	rotate_matrix[0][0] = math.cos(math.radians(angle))
+	rotate_matrix[0][1] = math.sin(math.radians(angle))
+	rotate_matrix[1][0] = -math.sin(math.radians(angle))
+	rotate_matrix[1][1] = math.cos(math.radians(angle))
 	current_vertex = translate(current_vertex,-x,-y,0)
 	current_vertex = np.dot(current_vertex,rotate_matrix)
 	current_vertex = translate(current_vertex,x,y,0)
@@ -119,7 +118,7 @@ def rotate3D(current_vertex,axis,angle):
 	current_vertex = np.dot(current_vertex,rotate_matrix)
 	return current_vertex
 
-def custom(current_vertex,command):
+def custom(current_vertex,command,dimensi):
 	s = (3,3)
 	custom_matrix = np.zeros(s)
 	if(dimensi == 2):
@@ -184,8 +183,6 @@ def get_command():
 
 def input_vertices():
 	start_vertex = []
-	edge_list = []
-	vertices_edges = []
 	print ("Masukkan Banyaknya Sisi : ")
 	n_vertices = input()
 	for x in range(int(n_vertices)):
@@ -199,15 +196,4 @@ def input_vertices():
 			tmp[n] = float(tmp[n])
 		tmp.append(0)
 		start_vertex.append(tmp)
-		#Added edge_list for 
-		if x<int(n_vertices)-1 :
-			edge_list.append([x,x+1])
-		else :
-			edge_list.append([x,0])
-	vertices_edges.append(start_vertex)
-	vertices_edges.append(edge_list)
-	return vertices_edges
-
-dimensi = 2
-start_vertex = input_vertices()
-print(get_command())
+	return start_vertex
