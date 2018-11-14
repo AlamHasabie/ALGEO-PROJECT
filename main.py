@@ -1,16 +1,17 @@
-import formula_transformasi as ft
-import graphic
-import numpy as np
-
-from OpenGL.GL import *
-from OpenGL.GLU import *
-
+from formula_transformasi import *
+from graphic import *
 
 global start_vertex
 global current_vertex
 
 def main():
-    graphic.init()
+    start_vertex = input_vertices()
+    current_vertices = start_vertex
+    print(current_vertices)
+    init_window()
+    render_polygon(current_vertices)
+    while True :
+        get_command()
     #start_vertex = ft.input_vertices()
     #glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
     #graphic.render(start_vertex)
