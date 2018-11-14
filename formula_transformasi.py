@@ -98,6 +98,8 @@ def get_command():
 
 def input_vertices():
 	start_vertex = []
+	edge_list = []
+	vertices_edges = []
 	print ("Masukkan Banyaknya Sisi : ")
 	n_vertices = input()
 	for x in range(int(n_vertices)):
@@ -111,5 +113,11 @@ def input_vertices():
 			tmp[n] = float(tmp[n])
 		tmp.append(0)
 		start_vertex.append(tmp)
-	edge_list = []
-	return start_vertex
+		#Added edge_list for 
+		if x<int(n_vertices)-1 :
+			edge_list.append([x,x+1])
+		else :
+			edge_list.append([x,0])
+	vertices_edges.append(start_vertex)
+	vertices_edges.append(edge_list)
+	return vertices_edges
