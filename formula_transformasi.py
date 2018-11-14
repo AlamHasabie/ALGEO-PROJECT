@@ -1,6 +1,8 @@
-import numpy as np
-import time
 import math
+
+import numpy as np
+
+start_vertex = []
 
 def dilate(current_vertex,k):
 	current_vertex  = (i*k for i in current_vertex)
