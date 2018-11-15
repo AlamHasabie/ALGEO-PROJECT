@@ -124,6 +124,50 @@ def multiple(n_iterations) :
 		i=i+1
 
 
+
+def animate_rotate_3d(command) :
+	global CURRENT_VERTICES
+	global EDGES
+	i=0
+	output_matrix = np.matrix(CURRENT_VERTICES)
+	while i<int(command[2]) :
+		output_matrix = rotate3D(output_matrix,command[1],1)
+		render_cube(output_matrix.tolist(),EDGES)
+		i=i+1
+	CURRENT_VERTICES = output_matrix.tolist()
+	render_cube(CURRENT_VERTICES,EDGES)
+
+def animate_translate_3d(command) :
+	global CURRENT_VERTICES
+	global EDGES
+	i=0
+	output_matrix = translate(np.matrix(CURRENT_VERTICES),float(command[1]),float(command[2]),float(command[3]))
+	input_matrix = np.matrix(CURRENT_VERTICES)
+	diff_matrix = output_matrix-input_matrix
+	CURRENT_VERTICES = output_matrix.tolist()
+	i=0
+	diff_matrix = diff_matrix/60
+	while i<60 :
+		input_matrix = input_matrix + diff_matrix
+		render_cube(input_matrix.tolist(),EDGES)
+		i=i+1
+	render_cube(CURRENT_VERTICES,EDGES)
+
+def animate_dilate_3d(command) :
+	global CURRENT_VERTICES
+	global EDGES
+	output_matrix = dilate(np.matrix(CURRENT_VERTICES),float(command[1]))
+	input_matrix = np.matrix(CURRENT_VERTICES)
+	CURRENT_VERTICES = output_matrix.tolist()
+	i=0
+	diff_matrix = output_matrix-input_matrix
+	diff_matrix = diff_matrix/60
+	while i<60 :
+		input_matrix = input_matrix+diff_matrix
+		render_cube(input_matrix.tolist(),EDGES)
+		i=i+1
+	render_cube(CURRENT_VERTICES,EDGES)
+	
 def dimension3() :
 	global dimension
 	global START_VERTICES
@@ -156,9 +200,23 @@ def dimension3() :
 		[3,7]
 	]
 	render_cube(CURRENT_VERTICES,EDGES)
-	while True:
-		i=1
-	return 0
+	is_running_3d = True
+	while is_running_3d:
+		command = input("Masukkan perintah : ")
+		command = command.split(" ")
+		if command[0] == "rotate" :
+			animate_rotate_3d(command)
+		elif command[0] == "translate" :
+			animate_translate_3d(command)
+		elif command[0] == "dilate" :
+			animate_dilate_3d(command)
+		elif command[0] =="reset" :
+			CURRENT_VERTICES = START_VERTICES
+			render_cube(CURRENT_VERTICES,EDGES)
+		elif command[0] == "exit" :
+			is_running_3d = False
+		
+
 
 
 def main():

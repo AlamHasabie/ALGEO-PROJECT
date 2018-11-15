@@ -18,7 +18,7 @@ def init_window_3d():
     pygame.display.set_mode(display, DOUBLEBUF|OPENGL)
     gluPerspective(45, (display[0]/display[1]), 0.1, 4000.0)
     glTranslatef(0.0,0.0, -1500)
-    glRotatef(10,1,1,0)
+    glRotatef(20,1,1,0)
 
 def render_polygon(CURRENT_VERTICES):
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
@@ -47,7 +47,7 @@ def render_cube(CURRENT_VERTICES,EDGES):
     glVertex3f(900,0,0)
     glVertex3f(0,-900,0)
     glVertex3f(0,900,0)
-    glVertex3f(0,0,900)
-    glVertex3f(0,0,-900)
+    glVertex3f(0,0,1800)
+    glVertex3f(0,0,-1800)
     glEnd()
     pygame.display.flip()
