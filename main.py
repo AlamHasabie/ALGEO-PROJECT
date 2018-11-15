@@ -9,19 +9,24 @@ dimension = 0
 
 
 
-def animate_translate_2d(dx,dy) :
+def animate_translate(dx,dy,dz) :
 	global CURRENT_VERTICES
+	global EDGES
 	a_dx = dx/60
 	a_dy = dy/60
+	a_dz = dz/60
 	i=1
 	while i<=60 :
-		matrix = np.matrix(CURRENT_VERTICES)
-		matrix = translate(matrix,a_dx,a_dy,0)
+		matrix = translate(np.matrix(CURRENT_VERTICES),a_dx,a_dy,a_dz)
 		CURRENT_VERTICES = matrix.tolist()
-		render_polygon(CURRENT_VERTICES)
+		if dimension==2 :
+			render_polygon(CURRENT_VERTICES)
+		else :
+			render_cube(CURRENT_VERTICES,EDGES)
 		i=i+1
 def animate_dilate(factor) :
 	global CURRENT_VERTICES
+	global EDGES
 	output_matrix = dilate(np.matrix(CURRENT_VERTICES),factor)
 	current_matrix = np.matrix(CURRENT_VERTICES)
 	CURRENT_VERTICES = output_matrix.tolist()
@@ -30,9 +35,11 @@ def animate_dilate(factor) :
 	i=0
 	while i<60:
 		current_matrix = current_matrix + diff_matrix
-		render_polygon(current_matrix.tolist())
+		if dimension==2 :
+			render_polygon(current_matrix.tolist())
+		else :
+			render_cube(current_matrix.tolist(),EDGES)
 		i=i+1
-	render_polygon(CURRENT_VERTICES)
 def animate_rotate(command) :
 	global CURRENT_VERTICES
 	i = 0
@@ -49,9 +56,9 @@ def animate_shear(command) :
 	matrix_output = shear(matrix_current,command[1],float(command[2]),0)
 	CURRENT_VERTICES = matrix_output.tolist()
 	diff_matrix = matrix_output-matrix_current
-	diff_matrix=diff_matrix/120
+	diff_matrix=diff_matrix/60
 	i=0
-	while i<120 :
+	while i<60 :
 		matrix_current = matrix_current + diff_matrix
 		render_polygon(matrix_current.tolist())
 		i=i+1
@@ -59,6 +66,7 @@ def animate_shear(command) :
 	render_polygon(CURRENT_VERTICES)
 def animate_stretch(command) :
 	global CURRENT_VERTICES
+	global EDGES
 	output_matrix = stretch(np.matrix(CURRENT_VERTICES),command[1],float(command[2]))
 	current_matrix = np.matrix(CURRENT_VERTICES)
 	CURRENT_VERTICES = output_matrix.tolist()
@@ -67,40 +75,49 @@ def animate_stretch(command) :
 	i=0
 	while i<60 :
 		current_matrix = current_matrix + diff_matrix
-		render_polygon(current_matrix.tolist())
+		if dimension==2 :
+			render_polygon(current_matrix.tolist())
+		else :
+			render_cube(current_matrix.tolist(),EDGES)
 		i=i+1
-	render_polygon(CURRENT_VERTICES)
+
 def animate_reflect(command) :
 	global CURRENT_VERTICES
-	output_matrix = reflect(np.matrix(CURRENT_VERTICES),command[1],2)
+	global EDGES
 	current_matrix = np.matrix(CURRENT_VERTICES)
+	output_matrix = reflect(np.matrix(CURRENT_VERTICES),command[1],dimension)
 	CURRENT_VERTICES = output_matrix.tolist()
 	diff_matrix = output_matrix-current_matrix 
 	diff_matrix = diff_matrix/60
 	i=0
 	while i<60 :
 		current_matrix = current_matrix +diff_matrix
-		render_polygon(current_matrix.tolist())
+		if dimension==2 :
+			render_polygon(current_matrix.tolist())
+		else :
+			render_cube(current_matrix.tolist(),EDGES)
 		i=i+1
-	render_polygon(CURRENT_VERTICES)
 
 
 def animate_custom(command) :
 	global CURRENT_VERTICES
-	output_matrix = custom(np.matrix(CURRENT_VERTICES),command,2)
+	global EDGES
 	current_matrix = np.matrix(CURRENT_VERTICES)
+	output_matrix = custom(np.matrix(CURRENT_VERTICES),command,dimension)
 	diff_matrix = output_matrix - current_matrix
 	CURRENT_VERTICES = output_matrix.tolist()
 	i=0
 	diff_matrix = diff_matrix/60
 	while i<60 :
 		current_matrix = current_matrix + diff_matrix
-		render_polygon(current_matrix.tolist())
+		if dimension==2 :
+			render_polygon(current_matrix.tolist())
+		else :
+			render_cube(current_matrix.tolist(),EDGES)
 		i = i+1
-	render_polygon(CURRENT_VERTICES)
 
 
-def multiple(n_iterations) :
+def multiple_2d(n_iterations) :
 	i=1
 	while(i<=n_iterations) :
 		command = input()
@@ -122,7 +139,24 @@ def multiple(n_iterations) :
 		else :
 			print('Perintah salah. Masukkan perintah kembali :')
 		i=i+1
-
+def multiple_3d(n_iterations) :
+	i=0
+	while i<n_iterations :
+		command = input()
+		command = command.split(" ")
+		if command[0] == "rotate" :
+			animate_rotate_3d(command)
+		elif command[0] == "translate" :
+			animate_translate(float(command[1]),float(command[2]),float(command[3]))
+		elif command[0] == "dilate" :
+			animate_dilate(float(command[1]))
+		elif command[0] == "reflect ":
+			animate_reflect(command)
+		elif command[0] == "custom" :
+			animate_custom(command)
+		elif command[0] == "stretch" :
+			animate_stretch(command)
+		i=i+1
 
 
 def animate_rotate_3d(command) :
@@ -135,37 +169,6 @@ def animate_rotate_3d(command) :
 		render_cube(output_matrix.tolist(),EDGES)
 		i=i+1
 	CURRENT_VERTICES = output_matrix.tolist()
-	render_cube(CURRENT_VERTICES,EDGES)
-
-def animate_translate_3d(command) :
-	global CURRENT_VERTICES
-	global EDGES
-	i=0
-	output_matrix = translate(np.matrix(CURRENT_VERTICES),float(command[1]),float(command[2]),float(command[3]))
-	input_matrix = np.matrix(CURRENT_VERTICES)
-	diff_matrix = output_matrix-input_matrix
-	CURRENT_VERTICES = output_matrix.tolist()
-	i=0
-	diff_matrix = diff_matrix/60
-	while i<60 :
-		input_matrix = input_matrix + diff_matrix
-		render_cube(input_matrix.tolist(),EDGES)
-		i=i+1
-	render_cube(CURRENT_VERTICES,EDGES)
-
-def animate_dilate_3d(command) :
-	global CURRENT_VERTICES
-	global EDGES
-	output_matrix = dilate(np.matrix(CURRENT_VERTICES),float(command[1]))
-	input_matrix = np.matrix(CURRENT_VERTICES)
-	CURRENT_VERTICES = output_matrix.tolist()
-	i=0
-	diff_matrix = output_matrix-input_matrix
-	diff_matrix = diff_matrix/60
-	while i<60 :
-		input_matrix = input_matrix+diff_matrix
-		render_cube(input_matrix.tolist(),EDGES)
-		i=i+1
 	render_cube(CURRENT_VERTICES,EDGES)
 	
 def dimension3() :
@@ -207,18 +210,22 @@ def dimension3() :
 		if command[0] == "rotate" :
 			animate_rotate_3d(command)
 		elif command[0] == "translate" :
-			animate_translate_3d(command)
+			animate_translate(float(command[1]),float(command[2]),float(command[3]))
 		elif command[0] == "dilate" :
-			animate_dilate_3d(command)
+			animate_dilate(float(command[1]))
 		elif command[0] =="reset" :
 			CURRENT_VERTICES = START_VERTICES
 			render_cube(CURRENT_VERTICES,EDGES)
+		elif command[0] == "reflect ":
+			animate_reflect(command)
+		elif command[0] == "custom" :
+			animate_custom(command)
+		elif command[0] == "stretch" :
+			animate_stretch(command)
 		elif command[0] == "exit" :
 			is_running_3d = False
-		
-
-
-
+		elif command[0] == "multiple" :
+			multiple_3d(int(command[1]))
 def main():
 	global dimension
 	global CURRENT_VERTICES
@@ -242,7 +249,7 @@ def main():
 		if command[0] == 'dilate' :
 			animate_dilate(float(command[1]))
 		elif(command[0] == 'translate'):
-			animate_translate_2d(float(command[1]),float(command[2]))
+			animate_translate(float(command[1]),float(command[2]),0)
 		elif(command[0] == 'custom'):
 			animate_custom(command)
 		elif(command[0] == 'rotate'):
@@ -254,12 +261,12 @@ def main():
 		elif(command[0] == 'reflect'):
 			animate_reflect(command)
 		elif(command[0]== 'multiple') :
-			multiple(int(command[1]))
+			multiple_2d(int(command[1]))
 		elif(command[0]=='reset'):
 			CURRENT_VERTICES = START_VERTICES
 			render_polygon(CURRENT_VERTICES)
 		elif command[0]=='exit' :
-			is_running = False
+			is_running_2d = False
 		else :
 			print('Perintah salah. Masukkan perintah kembali :')
 main()
