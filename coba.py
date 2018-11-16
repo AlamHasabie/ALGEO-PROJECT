@@ -111,7 +111,7 @@ def rotate3D(current_vertex,axis,angle):
 		rotate_matrix[2][0] = math.sin(math.radians(angle))
 		rotate_matrix[2][2] = math.cos(math.radians(angle))
 	elif(axis == 'x'):
-		rotate_matrix[1][0] = math.cos(math.radians(angle))
+		rotate_matrix[1][1] = math.cos(math.radians(angle))
 		rotate_matrix[1][2] = math.sin(math.radians(angle))
 		rotate_matrix[2][1] = -math.sin(math.radians(angle))
 		rotate_matrix[2][2] = math.cos(math.radians(angle))
