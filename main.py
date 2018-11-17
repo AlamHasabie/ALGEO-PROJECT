@@ -93,7 +93,6 @@ def animate_reflect(command) :
 	output_matrix = reflect(np.matrix(CURRENT_VERTICES),command[1],dimension)
 	CURRENT_VERTICES = output_matrix.tolist()
 	diff_matrix = output_matrix-current_matrix 
-	print(diff_matrix)
 	diff_matrix = diff_matrix/60
 	i=0
 	while i<60 :

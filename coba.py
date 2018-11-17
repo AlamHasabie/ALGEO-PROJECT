@@ -127,10 +127,10 @@ def custom(current_vertex,command,dimensi):
 		custom_matrix[1][0] = command[3]
 		custom_matrix[1][1] = command[4]
 	else:
-		idx = 1
-		for i in custom_matrix:
-			i = command[idx]
-			idx = idx + 1
+		idx = 0
+		while idx<9 :
+			custom_matrix[idx//3][idx%3] = float(command[idx+1])
+			idx = idx+1
 	current_vertex = np.dot(current_vertex,custom_matrix)
 	return current_vertex
 
