@@ -52,6 +52,8 @@ def animate_rotate(command) :
 	
 def animate_shear(command) :
 	global CURRENT_VERTICES
+	global EDGES
+	global dimension
 	matrix_current = np.matrix(CURRENT_VERTICES)
 	matrix_output = shear(matrix_current,command[1],float(command[2]),0)
 	CURRENT_VERTICES = matrix_output.tolist()
@@ -60,7 +62,10 @@ def animate_shear(command) :
 	i=0
 	while i<60 :
 		matrix_current = matrix_current + diff_matrix
-		render_polygon(matrix_current.tolist())
+		if dimension==2 :
+			render_polygon(matrix_current.tolist())
+		else :
+			render_cube(matrix_current.tolist(),EDGES)
 		i=i+1
 	#CURRENT_VERTICES = shear(np.matrix(CURRENT_VERTICES),command[1],float(command[2]),0).tolist()
 	render_polygon(CURRENT_VERTICES)
@@ -88,6 +93,7 @@ def animate_reflect(command) :
 	output_matrix = reflect(np.matrix(CURRENT_VERTICES),command[1],dimension)
 	CURRENT_VERTICES = output_matrix.tolist()
 	diff_matrix = output_matrix-current_matrix 
+	print(diff_matrix)
 	diff_matrix = diff_matrix/60
 	i=0
 	while i<60 :
@@ -150,7 +156,7 @@ def multiple_3d(n_iterations) :
 			animate_translate(float(command[1]),float(command[2]),float(command[3]))
 		elif command[0] == "dilate" :
 			animate_dilate(float(command[1]))
-		elif command[0] == "reflect ":
+		elif command[0] == "reflect" :
 			animate_reflect(command)
 		elif command[0] == "custom" :
 			animate_custom(command)
@@ -216,7 +222,7 @@ def dimension3() :
 		elif command[0] =="reset" :
 			CURRENT_VERTICES = START_VERTICES
 			render_cube(CURRENT_VERTICES,EDGES)
-		elif command[0] == "reflect ":
+		elif command[0] == "reflect":
 			animate_reflect(command)
 		elif command[0] == "custom" :
 			animate_custom(command)
