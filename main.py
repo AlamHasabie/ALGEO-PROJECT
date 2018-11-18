@@ -1,4 +1,4 @@
-from coba import *
+from formula_transformasi import *
 from graphic import *
 import numpy as np
 
@@ -8,7 +8,7 @@ EDGES = []
 dimension = 0
 
 
-
+#Animasi translasi, baik 2 ataupun 3 dimensi
 def animate_translate(dx,dy,dz) :
 	global CURRENT_VERTICES
 	global EDGES
@@ -24,6 +24,8 @@ def animate_translate(dx,dy,dz) :
 		else :
 			render_cube(CURRENT_VERTICES,EDGES)
 		i=i+1
+
+#Animasi dilatasi
 def animate_dilate(factor) :
 	global CURRENT_VERTICES
 	global EDGES
@@ -40,16 +42,20 @@ def animate_dilate(factor) :
 		else :
 			render_cube(current_matrix.tolist(),EDGES)
 		i=i+1
+
+#Animasi rotate
 def animate_rotate(command) :
 	global CURRENT_VERTICES
-	i = 0
-	while i < int(command[1]) :
+	diff = float(command[1])/60
+	i=1
+	while i < 60 :
 		matrix = np.matrix(CURRENT_VERTICES)
-		matrix = rotate2D(matrix,1,float(command[2]),float(command[3]))
+		matrix = rotate2D(matrix,diff,float(command[2]),float(command[3]))
 		CURRENT_VERTICES = matrix.tolist()
 		render_polygon(CURRENT_VERTICES)
 		i=i+1
-	
+
+#Animasi shear
 def animate_shear(command) :
 	global CURRENT_VERTICES
 	global EDGES
@@ -69,6 +75,8 @@ def animate_shear(command) :
 		i=i+1
 	#CURRENT_VERTICES = shear(np.matrix(CURRENT_VERTICES),command[1],float(command[2]),0).tolist()
 	render_polygon(CURRENT_VERTICES)
+
+#Animasi stretch
 def animate_stretch(command) :
 	global CURRENT_VERTICES
 	global EDGES
@@ -86,6 +94,7 @@ def animate_stretch(command) :
 			render_cube(current_matrix.tolist(),EDGES)
 		i=i+1
 
+#Melakukan Reflect
 def animate_reflect(command) :
 	global CURRENT_VERTICES
 	global EDGES
@@ -103,7 +112,7 @@ def animate_reflect(command) :
 			render_cube(current_matrix.tolist(),EDGES)
 		i=i+1
 
-
+#ANIMASI CUSTOM
 def animate_custom(command) :
 	global CURRENT_VERTICES
 	global EDGES
@@ -121,7 +130,7 @@ def animate_custom(command) :
 			render_cube(current_matrix.tolist(),EDGES)
 		i = i+1
 
-
+#MULTIPLE COMMAND
 def multiple_2d(n_iterations) :
 	i=1
 	while(i<=n_iterations) :
@@ -163,25 +172,30 @@ def multiple_3d(n_iterations) :
 			animate_stretch(command)
 		i=i+1
 
-
+#rotasi 3d
 def animate_rotate_3d(command) :
 	global CURRENT_VERTICES
 	global EDGES
-	i=0
+	i=1
+	diff = float(command[2])/60
 	output_matrix = np.matrix(CURRENT_VERTICES)
-	while i<int(command[2]) :
-		output_matrix = rotate3D(output_matrix,command[1],1)
+	while i<=60 :
+		output_matrix = rotate3D(output_matrix,command[1],diff)
 		render_cube(output_matrix.tolist(),EDGES)
 		i=i+1
 	CURRENT_VERTICES = output_matrix.tolist()
 	render_cube(CURRENT_VERTICES,EDGES)
-	
+
+
+
+#Bagian program yang menangani kasus 3d
 def dimension3() :
 	global dimension
 	global START_VERTICES
 	global CURRENT_VERTICES
 	global EDGES
 	init_window_3d()
+	#Definisi kubus
 	START_VERTICES = [
 		[-100.0,100.0,-100.0],
 		[100.0,100.0,-100.0],
@@ -231,10 +245,12 @@ def dimension3() :
 			is_running_3d = False
 		elif command[0] == "multiple" :
 			multiple_3d(int(command[1]))
+
 def main():
 	global dimension
 	global CURRENT_VERTICES
 	global START_VERTICES
+	#Pilihan dimensi
 	while dimension!=2 and dimension !=3 :
 		dimension = int(input("Masukkan dimensi : "))
 		if dimension!=2 and dimension !=3 :
@@ -242,6 +258,7 @@ def main():
 	if dimension ==3 :
 		dimension3()
 		is_running_2d = False
+	#Bagian yang menangani dua dimensi
 	else :
 		is_running_2d = True
 		START_VERTICES = input_vertices()
