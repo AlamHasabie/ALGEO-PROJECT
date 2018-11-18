@@ -47,7 +47,7 @@ def animate_dilate(factor) :
 def animate_rotate(command) :
 	global CURRENT_VERTICES
 	diff = float(command[1])/120
-	i=1
+	i=0
 	while i < 120:
 		matrix = np.matrix(CURRENT_VERTICES)
 		matrix = rotate2D(matrix,diff,float(command[2]),float(command[3]))
@@ -293,6 +293,17 @@ def main():
 			render_polygon(CURRENT_VERTICES)
 		elif command[0]=='exit' :
 			is_running_2d = False
+		elif command[0]=='help' :
+			print("Daftar perintah :")
+			print("1. translate [dx] [dy]")
+			print("2. dilate [factor]")
+			print("3. custom [1] [2] [3] [4]")
+			print("4. rotate [angle] [x] [y]")
+			print("5. stretch [axis] [factor]")
+			print("6. multiple [n_iterations]")
+			print("7. shear [axis] [factor]")
+			print("8. reset")
+			print("9. exit")
 		else :
 			print('Perintah salah. Masukkan perintah kembali :')
 main()
