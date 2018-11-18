@@ -1,4 +1,5 @@
 import pygame
+import numpy as np
 from pygame.locals import *
 
 from OpenGL.GL import *
@@ -23,7 +24,7 @@ def init_window_3d():
 def render_polygon(CURRENT_VERTICES):
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
     glBegin(GL_POLYGON)
-    glColor3f(3.0,4.0,5.0)
+    glColor3f(0.0, 1.0, 0.5)
     for vertex in CURRENT_VERTICES :
         glVertex3f(vertex[0],vertex[1],vertex[2])
     glEnd()
@@ -37,14 +38,16 @@ def render_polygon(CURRENT_VERTICES):
     glEnd()
     pygame.display.flip()
 
-def render_cube(CURRENT_VERTICES,EDGES):
+def render_cube(CURRENT_VERTICES,EDGES,randomColor):
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
-    glBegin(GL_LINES)
-    glColor3f(1,1,1)
+    i = 0
     for edge in EDGES :
+        glBegin(GL_POLYGON)
+        glColor3f(randomColor[i][0],randomColor[i][1],randomColor[i][2])
         for vertex in edge :
             glVertex3f(CURRENT_VERTICES[vertex][0],CURRENT_VERTICES[vertex][1],CURRENT_VERTICES[vertex][2])
-    glEnd()
+        glEnd()
+        i = i + 1
     glBegin(GL_LINES)
     glColor3f(1,0,0)
     glVertex3f(-900,0,0)

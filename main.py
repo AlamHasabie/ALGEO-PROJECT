@@ -22,7 +22,7 @@ def animate_translate(dx,dy,dz) :
 		if dimension==2 :
 			render_polygon(CURRENT_VERTICES)
 		else :
-			render_cube(CURRENT_VERTICES,EDGES)
+			render_cube(CURRENT_VERTICES,EDGES,randomColor)
 		i=i+1
 
 #Animasi dilatasi
@@ -40,7 +40,7 @@ def animate_dilate(factor) :
 		if dimension==2 :
 			render_polygon(current_matrix.tolist())
 		else :
-			render_cube(current_matrix.tolist(),EDGES)
+			render_cube(current_matrix.tolist(),EDGES,randomColor)
 		i=i+1
 
 #Animasi rotate
@@ -71,7 +71,7 @@ def animate_shear(command) :
 		if dimension==2 :
 			render_polygon(matrix_current.tolist())
 		else :
-			render_cube(matrix_current.tolist(),EDGES)
+			render_cube(matrix_current.tolist(),EDGES,randomColor)
 		i=i+1
 	#CURRENT_VERTICES = shear(np.matrix(CURRENT_VERTICES),command[1],float(command[2]),0).tolist()
 	render_polygon(CURRENT_VERTICES)
@@ -91,7 +91,7 @@ def animate_stretch(command) :
 		if dimension==2 :
 			render_polygon(current_matrix.tolist())
 		else :
-			render_cube(current_matrix.tolist(),EDGES)
+			render_cube(current_matrix.tolist(),EDGES,randomColor)
 		i=i+1
 
 #Melakukan Reflect
@@ -109,7 +109,7 @@ def animate_reflect(command) :
 		if dimension==2 :
 			render_polygon(current_matrix.tolist())
 		else :
-			render_cube(current_matrix.tolist(),EDGES)
+			render_cube(current_matrix.tolist(),EDGES,randomColor)
 		i=i+1
 
 #ANIMASI CUSTOM
@@ -127,7 +127,7 @@ def animate_custom(command) :
 		if dimension==2 :
 			render_polygon(current_matrix.tolist())
 		else :
-			render_cube(current_matrix.tolist(),EDGES)
+			render_cube(current_matrix.tolist(),EDGES,randomColor)
 		i = i+1
 
 #MULTIPLE COMMAND
@@ -181,11 +181,10 @@ def animate_rotate_3d(command) :
 	output_matrix = np.matrix(CURRENT_VERTICES)
 	while i<=60 :
 		output_matrix = rotate3D(output_matrix,command[1],diff)
-		render_cube(output_matrix.tolist(),EDGES)
+		render_cube(output_matrix.tolist(),EDGES,randomColor)
 		i=i+1
 	CURRENT_VERTICES = output_matrix.tolist()
-	render_cube(CURRENT_VERTICES,EDGES)
-
+	render_cube(CURRENT_VERTICES,EDGES,randomColor)
 
 
 #Bagian program yang menangani kasus 3d
@@ -208,20 +207,14 @@ def dimension3() :
 	]
 	CURRENT_VERTICES = START_VERTICES
 	EDGES = [
-		[0,1],
-		[1,2],
-		[2,3],
-		[3,0],
-		[4,5],
-		[5,6],
-		[6,7],
-		[7,4],
-		[0,4],
-		[1,5],
-		[2,6],
-		[3,7]
+		[0,1,2,3],
+		[4,5,6,7],
+		[0,1,5,4],
+		[3,2,6,7],
+		[0,3,7,4],
+		[1,2,6,5],
 	]
-	render_cube(CURRENT_VERTICES,EDGES)
+	render_cube(CURRENT_VERTICES,EDGES,randomColor)
 	is_running_3d = True
 	while is_running_3d:
 		command = input("Masukkan perintah : ")
@@ -234,7 +227,7 @@ def dimension3() :
 			animate_dilate(float(command[1]))
 		elif command[0] =="reset" :
 			CURRENT_VERTICES = START_VERTICES
-			render_cube(CURRENT_VERTICES,EDGES)
+			render_cube(CURRENT_VERTICES,EDGES,randomColor)
 		elif command[0] == "reflect":
 			animate_reflect(command)
 		elif command[0] == "custom" :
@@ -247,9 +240,11 @@ def dimension3() :
 			multiple_3d(int(command[1]))
 
 def main():
+	global randomColor 
 	global dimension
 	global CURRENT_VERTICES
 	global START_VERTICES
+	randomColor = np.random.rand(6,3)
 	#Pilihan dimensi
 	while dimension!=2 and dimension !=3 :
 		dimension = int(input("Masukkan dimensi : "))
