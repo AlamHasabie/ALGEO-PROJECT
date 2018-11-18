@@ -12,11 +12,11 @@ dimension = 0
 def animate_translate(dx,dy,dz) :
 	global CURRENT_VERTICES
 	global EDGES
-	a_dx = dx/60
-	a_dy = dy/60
-	a_dz = dz/60
+	a_dx = dx/120
+	a_dy = dy/120
+	a_dz = dz/120
 	i=1
-	while i<=60 :
+	while i<=120 :
 		matrix = translate(np.matrix(CURRENT_VERTICES),a_dx,a_dy,a_dz)
 		CURRENT_VERTICES = matrix.tolist()
 		if dimension==2 :
@@ -33,9 +33,9 @@ def animate_dilate(factor) :
 	current_matrix = np.matrix(CURRENT_VERTICES)
 	CURRENT_VERTICES = output_matrix.tolist()
 	diff_matrix = output_matrix - current_matrix
-	diff_matrix = diff_matrix/60
+	diff_matrix = diff_matrix/120
 	i=0
-	while i<60:
+	while i<120:
 		current_matrix = current_matrix + diff_matrix
 		if dimension==2 :
 			render_polygon(current_matrix.tolist())
@@ -46,9 +46,9 @@ def animate_dilate(factor) :
 #Animasi rotate
 def animate_rotate(command) :
 	global CURRENT_VERTICES
-	diff = float(command[1])/60
+	diff = float(command[1])/120
 	i=1
-	while i < 60 :
+	while i < 120:
 		matrix = np.matrix(CURRENT_VERTICES)
 		matrix = rotate2D(matrix,diff,float(command[2]),float(command[3]))
 		CURRENT_VERTICES = matrix.tolist()
@@ -61,12 +61,15 @@ def animate_shear(command) :
 	global EDGES
 	global dimension
 	matrix_current = np.matrix(CURRENT_VERTICES)
-	matrix_output = shear(matrix_current,command[1],float(command[2]),0)
+	if dimension==2:
+		matrix_output = shear(matrix_current,command[1],float(command[2]),0)
+	else :
+		matrix_output = shear(matrix_current,command[1],float(command[2]),float(command[3]))
 	CURRENT_VERTICES = matrix_output.tolist()
 	diff_matrix = matrix_output-matrix_current
-	diff_matrix=diff_matrix/60
+	diff_matrix=diff_matrix/120
 	i=0
-	while i<60 :
+	while i<120 :
 		matrix_current = matrix_current + diff_matrix
 		if dimension==2 :
 			render_polygon(matrix_current.tolist())
@@ -74,7 +77,6 @@ def animate_shear(command) :
 			render_cube(matrix_current.tolist(),EDGES)
 		i=i+1
 	#CURRENT_VERTICES = shear(np.matrix(CURRENT_VERTICES),command[1],float(command[2]),0).tolist()
-	render_polygon(CURRENT_VERTICES)
 
 #Animasi stretch
 def animate_stretch(command) :
@@ -84,9 +86,9 @@ def animate_stretch(command) :
 	current_matrix = np.matrix(CURRENT_VERTICES)
 	CURRENT_VERTICES = output_matrix.tolist()
 	diff_matrix = output_matrix - current_matrix
-	diff_matrix = diff_matrix/60
+	diff_matrix = diff_matrix/120
 	i=0
-	while i<60 :
+	while i<120 :
 		current_matrix = current_matrix + diff_matrix
 		if dimension==2 :
 			render_polygon(current_matrix.tolist())
@@ -102,9 +104,9 @@ def animate_reflect(command) :
 	output_matrix = reflect(np.matrix(CURRENT_VERTICES),command[1],dimension)
 	CURRENT_VERTICES = output_matrix.tolist()
 	diff_matrix = output_matrix-current_matrix 
-	diff_matrix = diff_matrix/60
+	diff_matrix = diff_matrix/120
 	i=0
-	while i<60 :
+	while i<120 :
 		current_matrix = current_matrix +diff_matrix
 		if dimension==2 :
 			render_polygon(current_matrix.tolist())
@@ -121,8 +123,8 @@ def animate_custom(command) :
 	diff_matrix = output_matrix - current_matrix
 	CURRENT_VERTICES = output_matrix.tolist()
 	i=0
-	diff_matrix = diff_matrix/60
-	while i<60 :
+	diff_matrix = diff_matrix/120
+	while i<120 :
 		current_matrix = current_matrix + diff_matrix
 		if dimension==2 :
 			render_polygon(current_matrix.tolist())
@@ -245,6 +247,8 @@ def dimension3() :
 			is_running_3d = False
 		elif command[0] == "multiple" :
 			multiple_3d(int(command[1]))
+		elif command[0] == "shear" :
+			animate_shear(command)
 
 def main():
 	global dimension
