@@ -242,6 +242,17 @@ def dimension3() :
 			multiple_3d(int(command[1]))
 		elif command[0] == "shear" :
 			animate_shear(command)
+		elif command[0] == "help" :
+			print("Daftar perintah :")
+			print("1. translate [dx] [dy] [dz]")
+			print("2. dilate [factor]")
+			print("3. custom [1] [2] [3] [4]")
+			print("4. rotate [axis] [angle]")
+			print("5. stretch [axis] [factor]")
+			print("6. multiple [n_iterations]")
+			print("7. shear [axis] [factor1] [factor2]")
+			print("8. reset")
+			print("9. exit")
 
 def main():
 	global randomColor 

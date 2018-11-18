@@ -43,12 +43,7 @@ def render_polygon(CURRENT_VERTICES):
     glEnd()
     pygame.display.flip()
 
-<<<<<<< HEAD
 def render_cube(CURRENT_VERTICES,EDGES,randomColor):
-=======
-def render_cube(CURRENT_VERTICES,EDGES):
-    camera_change()
->>>>>>> ce3c89057a77f8ed6c60ae9426568ae56a566efd
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
     i = 0
     for edge in EDGES :
